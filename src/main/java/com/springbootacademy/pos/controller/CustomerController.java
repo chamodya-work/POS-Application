@@ -3,7 +3,10 @@ package com.springbootacademy.pos.controller;
 import com.springbootacademy.pos.dto.CustomerDTO;
 import com.springbootacademy.pos.dto.request.CustomerUpdateDTO;
 import com.springbootacademy.pos.service.CustomerService;
+import com.springbootacademy.pos.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
@@ -39,10 +42,17 @@ public class CustomerController {
     @GetMapping(
             path = "/get-all-customers"
     )
-    public List<CustomerDTO> getAllCustomers(){
+//    public List<CustomerDTO> getAllCustomers(){
+//        List<CustomerDTO> getAllCustomers=customerService.getAllCustomers();
+//        return getAllCustomers;
+//    }
+    public ResponseEntity<StandardResponse> getAllCustomers(){
         List<CustomerDTO> getAllCustomers=customerService.getAllCustomers();
-        return getAllCustomers;
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(200,"success",getAllCustomers), HttpStatus.OK
+        );
     }
+
     @DeleteMapping(
             path = "deleteCustomer{cusid}"
     )

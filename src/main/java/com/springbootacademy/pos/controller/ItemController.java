@@ -4,7 +4,10 @@ import com.springbootacademy.pos.dto.CustomerDTO;
 import com.springbootacademy.pos.dto.request.ItemSaveRequestDTO;
 import com.springbootacademy.pos.dto.response.ItemGetResponseDTO;
 import com.springbootacademy.pos.service.ItemService;
+import com.springbootacademy.pos.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,9 +20,18 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
     @PostMapping("/save")
-    public String saveItem(@RequestBody ItemSaveRequestDTO itemSaveRequestDTO){
+    public ResponseEntity<StandardResponse> saveItem(@RequestBody ItemSaveRequestDTO itemSaveRequestDTO){
         String message=itemService.saveItem(itemSaveRequestDTO);
-        return "saved  successfully "+ message;
+//        return "saved  successfully "+ message;
+//        ResponseEntity<StandardResponse> response=new ResponseEntity<StandardResponse>(
+//                new StandardResponse(201,"Success",message), HttpStatus.CREATED
+//        );
+//        return response;
+        // we can do return directly without assign in to object
+        return new ResponseEntity<StandardResponse>(
+                new StandardResponse(201,"Success",message),
+                HttpStatus.CREATED
+        );
     }
     @GetMapping(
             path = "get-by-name",
