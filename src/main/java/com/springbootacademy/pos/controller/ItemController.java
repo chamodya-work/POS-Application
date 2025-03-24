@@ -19,9 +19,10 @@ import java.util.List;
 public class ItemController {
     @Autowired
     private ItemService itemService;
+
     @PostMapping("/save")
-    public ResponseEntity<StandardResponse> saveItem(@RequestBody ItemSaveRequestDTO itemSaveRequestDTO){
-        String message=itemService.saveItem(itemSaveRequestDTO);
+    public ResponseEntity<StandardResponse> saveItem(@RequestBody ItemSaveRequestDTO itemSaveRequestDTO) {
+        String message = itemService.saveItem(itemSaveRequestDTO);
 //        return "saved  successfully "+ message;
 //        ResponseEntity<StandardResponse> response=new ResponseEntity<StandardResponse>(
 //                new StandardResponse(201,"Success",message), HttpStatus.CREATED
@@ -29,16 +30,17 @@ public class ItemController {
 //        return response;
         // we can do return directly without assign in to object
         return new ResponseEntity<StandardResponse>(
-                new StandardResponse(201,"Success",message),
+                new StandardResponse(201, "Success", message),
                 HttpStatus.CREATED
         );
     }
+
     @GetMapping(
             path = "get-by-name",
             params = "name"
     )
-    public List<ItemGetResponseDTO> getItemByNameAndStatus(@RequestParam(value = "name") String itemName){
-        List<ItemGetResponseDTO> itemGetResponseDTOS=itemService.getItemByNameAndStatus(itemName);
+    public List<ItemGetResponseDTO> getItemByNameAndStatus(@RequestParam(value = "name") String itemName) {
+        List<ItemGetResponseDTO> itemGetResponseDTOS = itemService.getItemByNameAndStatus(itemName);
         return itemGetResponseDTOS;
     }
 }

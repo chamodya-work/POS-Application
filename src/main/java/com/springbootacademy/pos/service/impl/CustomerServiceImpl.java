@@ -3,6 +3,7 @@ package com.springbootacademy.pos.service.impl;
 import com.springbootacademy.pos.dto.CustomerDTO;
 import com.springbootacademy.pos.dto.request.CustomerUpdateDTO;
 import com.springbootacademy.pos.entity.Customer;
+import com.springbootacademy.pos.exception.NotFoundException;
 import com.springbootacademy.pos.repo.CustomerRepo;
 import com.springbootacademy.pos.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +90,7 @@ public class CustomerServiceImpl implements CustomerService{
         if(customerRepo.existsById(customerId)){
             customerRepo.deleteById(customerId);
             return "delete succesfully "+customerId;
-        }else throw new RuntimeException("no valid customerId exist");
+        }else throw new NotFoundException("no valid customerId exist for this");
     }
 
     @Override
