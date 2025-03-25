@@ -12,6 +12,5 @@ public class PosApplication {
         SpringApplication.run(PosApplication.class, args);
     }
 
-} 
-
+}
 

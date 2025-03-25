@@ -1,10 +1,12 @@
 package com.springbootacademy.pos.service.impl;
 
+import com.springbootacademy.pos.dto.paginated.PaginatedResponseItemDTO;
 import com.springbootacademy.pos.dto.request.ItemSaveRequestDTO;
 import com.springbootacademy.pos.dto.response.ItemGetResponseDTO;
 import com.springbootacademy.pos.entity.Customer;
 import com.springbootacademy.pos.entity.Item;
 import com.springbootacademy.pos.entity.enums.MeasuringType;
+import com.springbootacademy.pos.exception.NotFoundException;
 import com.springbootacademy.pos.repo.CustomerRepo;
 import com.springbootacademy.pos.repo.ItemRepo;
 import com.springbootacademy.pos.service.ItemService;
@@ -17,6 +19,8 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -71,6 +75,33 @@ public class ItemServiceImpl implements ItemService {
         }
         else throw new RuntimeException("Item is not active");
 
+    }
+
+    @Override
+    public List<ItemGetResponseDTO> getItemByStatus(boolean status) {
+        List<Item> items=itemRepo.findAllByActiveState(status);
+        if (items.size()>0){
+            //how use model mappers to map entity  list to DTO list
+            // List<ItemGetResponseDTO> itemGetResponseDTOS=modelMapper.map(items,new TypeToken<List<ItemGetResponseDTO>>(){}.getType());
+
+            List<ItemGetResponseDTO> itemGetResponseDTOS=itemMapper.entityListToDtoList(items); //how use map struct to map entity list to dto list
+            return itemGetResponseDTOS;
+        }
+        else throw new NotFoundException("Item is not active");
+    }
+
+    @Override
+    public PaginatedResponseItemDTO getItemByActiveStateWithPaginated(boolean status, int page, int size) {
+        Page<Item> items=itemRepo.findAllByActiveState(status, PageRequest.of(page,size));
+        //int count=itemRepo.countAllByActiveState(status);
+        if (items.getSize()<1){
+            throw new NotFoundException("no data found");
+        }
+
+        PaginatedResponseItemDTO paginatedResponseItemDTO=new PaginatedResponseItemDTO(
+                itemMapper.listDtoToPage(items),itemRepo.countAllByActiveState(status)
+        );
+        return paginatedResponseItemDTO;
     }
 
 }
