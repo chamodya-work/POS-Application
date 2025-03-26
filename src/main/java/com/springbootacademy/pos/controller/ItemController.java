@@ -49,7 +49,7 @@ public class ItemController {
         return itemGetResponseDTOS;
     }
     @GetMapping(
-            path = "get-all-by-state",
+            path = "get-all-by-state-paginated",
             params = {"activeStatus","page","size"}
     )
     ResponseEntity<StandardResponse> getItemByActiveState(

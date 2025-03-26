@@ -92,7 +92,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public PaginatedResponseItemDTO getItemByActiveStateWithPaginated(boolean status, int page, int size) {
-        Page<Item> items=itemRepo.findAllByActiveState(status, PageRequest.of(page,size));
+        Page<Item> items=itemRepo. findAllByActiveState(status, PageRequest.of(page,size));
         //int count=itemRepo.countAllByActiveState(status);
         if (items.getSize()<1){
             throw new NotFoundException("no data found");

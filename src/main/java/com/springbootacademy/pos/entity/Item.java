@@ -3,6 +3,8 @@ import com.springbootacademy.pos.entity.enums.MeasuringType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name = "item")
 //@NoArgsConstructor
@@ -34,5 +36,7 @@ public class Item {
     private double sellingPrice;
     @Column(name="active_state",columnDefinition = "TINYINT default 0")
     private boolean activeState;
+    @OneToMany(mappedBy="items")
+    private Set<OrderDetails> orderDetails;
 
 }
