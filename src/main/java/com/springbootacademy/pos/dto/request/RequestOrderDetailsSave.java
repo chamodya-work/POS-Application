@@ -11,5 +11,4 @@ public class RequestOrderDetailsSave {
     private double qty;
     private Double amount;
     private int items;
-    private int order;
 }
