@@ -17,7 +17,7 @@ import java.util.Set;
 public class RequestOrderSaveDTO {
     private int customer;
     private Date date;
-    private Double total;
     private List<RequestOrderDetailsSave> orderDetail;
+    private Double total;
 
 }
