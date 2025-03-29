@@ -51,11 +51,10 @@ public class OrderServiceImpl implements OrderService {
                 orderDetails.get(i).setOrder(order);
                 orderDetails.get(i).setItems(itemRepo.getReferenceById(requestOrderSaveDTO.getOrderDetail().get(i).getItems()));
             }
-            if (orderDetails.size()>1){
+            if (orderDetails.size()>0){
                 orderDetailsRepo.saveAll(orderDetails);
+                return "saved";
             }
-            return "saved";
-        }
-        return null;
+        } return "Order creation failed.";
     }
 }
