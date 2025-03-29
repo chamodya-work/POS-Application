@@ -1,6 +1,9 @@
 package com.springbootacademy.pos.service.impl;
 
+import com.springbootacademy.pos.dto.paginated.PaginatedResponseOrderDetails;
+import com.springbootacademy.pos.dto.queryInterface.OrderDetailsInterface;
 import com.springbootacademy.pos.dto.request.RequestOrderSaveDTO;
+import com.springbootacademy.pos.dto.response.ResponseOrderDetailsDTO;
 import com.springbootacademy.pos.entity.Customer;
 import com.springbootacademy.pos.entity.Item;
 import com.springbootacademy.pos.entity.Order;
@@ -15,6 +18,7 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -56,5 +60,27 @@ public class OrderServiceImpl implements OrderService {
                 return "saved";
             }
         } return "Order creation failed.";
+    }
+
+    @Override
+    public PaginatedResponseOrderDetails getAllOrderDetails(boolean status, int page, int size) {
+        List<OrderDetailsInterface> responseOrderDetailsDTOS =orderRepo.getAllOrderDetail(status, PageRequest.of(page,size));
+
+        List<ResponseOrderDetailsDTO> list=new ArrayList<>();
+        for (OrderDetailsInterface o:responseOrderDetailsDTOS){
+            ResponseOrderDetailsDTO r=new ResponseOrderDetailsDTO(
+                    o.getCustomerName(),
+                    o.getCustomerAddress(),
+                    o.getContactNumber(),
+                    o.getDate(),
+                    o.getTotal()
+            );
+            list.add(r);
+        }
+        PaginatedResponseOrderDetails paginatedResponseOrderDetails=new PaginatedResponseOrderDetails(
+                list,
+                orderRepo.countAllOrderDetails(status)
+        );
+        return paginatedResponseOrderDetails;
     }
 }
